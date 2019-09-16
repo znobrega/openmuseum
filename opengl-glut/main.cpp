@@ -1,8 +1,85 @@
 #include <GL/gl.h>
 #include <GL/glut.h>
 #include <iostream>
+#include "SOIL.h"
 
 GLfloat angle, fAspect, rotate;
+
+float positionFactor1 =   0.0;
+float positionFactor2 =  50.0;
+float positionFactor3 = 100.0;
+
+GLuint ground_tex;
+
+void ground(){
+	glPushMatrix();
+
+	GLfloat orange[] = {1.0, 0.45, 0.0, 1.0};
+	glMaterialfv(GL_FRONT, GL_AMBIENT, orange);
+	glMaterialfv(GL_FRONT, GL_DIFFUSE, orange);
+
+	for(unsigned short int i = 0; i < 5; i++){
+		for(unsigned short int j = 0; j < 5; j++){
+			glEnable(GL_TEXTURE_2D);
+			glBindTexture(GL_TEXTURE_2D, ground_tex);
+
+			glBegin(GL_QUADS);
+					glTexCoord2d(0.0,0.0); 
+					glVertex3f(positionFactor1 - i*10, -0.2f,  j*10);
+
+					glTexCoord2d(1.0,0.0); 
+					glVertex3f(positionFactor1 + i*10, -0.2f,  j*10);
+
+					glTexCoord2d(1.0,1.0); 
+					glVertex3f(positionFactor1 + i*10, -0.2f, -j*10);
+
+					glTexCoord2d(0.0,1.0);
+					glVertex3f(positionFactor1 - i*10, -0.2f, -j*10);			
+					
+			glEnd();
+			glDisable(GL_TEXTURE_2D);
+
+			glEnable(GL_TEXTURE_2D);
+			glBindTexture(GL_TEXTURE_2D, ground_tex);
+
+			glBegin(GL_QUADS);
+					glTexCoord2d(0.0,0.0); 
+					glVertex3f(positionFactor2 - i*10, -0.2f,  j*10);
+
+					glTexCoord2d(1.0,0.0); 
+					glVertex3f(positionFactor2 + i*10, -0.2f,  j*10);
+
+					glTexCoord2d(1.0,1.0); 
+					glVertex3f(positionFactor2 + i*10, -0.2f, -j*10);
+
+					glTexCoord2d(0.0,1.0);
+					glVertex3f(positionFactor2 - i*10, -0.2f, -j*10);			
+					
+			glEnd();
+			glDisable(GL_TEXTURE_2D);
+
+			glEnable(GL_TEXTURE_2D);
+			glBindTexture(GL_TEXTURE_2D, ground_tex);
+
+			glBegin(GL_QUADS);
+					glTexCoord2d(0.0,0.0); 
+					glVertex3f(positionFactor3 - i*10, -0.2f,  j*10);
+
+					glTexCoord2d(1.0,0.0); 
+					glVertex3f(positionFactor3 + i*10, -0.2f,  j*10);
+
+					glTexCoord2d(1.0,1.0); 
+					glVertex3f(positionFactor3 + i*10, -0.2f, -j*10);
+
+					glTexCoord2d(0.0,1.0);
+					glVertex3f(positionFactor3 - i*10, -0.2f, -j*10);			
+					
+			glEnd();
+			glDisable(GL_TEXTURE_2D);
+		}
+	}
+	glPopMatrix();
+}
 
 void fourth() {
     glBegin(GL_TRIANGLES);
@@ -20,10 +97,14 @@ void fourth() {
 // Função callback chamada para fazer o desenho
 void Desenha(void)
 {
+
+	
 	glClear(GL_COLOR_BUFFER_BIT);
 	rotate -= 0.15f;
 	glRotatef(rotate,1.0f,0.0,0.0);
 	fourth();
+
+	ground();
 	//glColor3f(0.0f, 0.0f, 1.0f);
 
 
@@ -132,6 +213,7 @@ void GerenciaMouse(int button, int state, int x, int y)
 	glutPostRedisplay();
 }
 
+
 // Programa Principal
 int main(int argc, char **argv)
 {
@@ -141,6 +223,16 @@ int main(int argc, char **argv)
 	glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB);
 	glutInitWindowSize(512,512);
 	glutCreateWindow("Visualizacao 3D");
+
+	//initializations();
+
+	ground_tex = SOIL_load_OGL_texture(
+        "assets/ground3.jpg",
+        SOIL_LOAD_AUTO,
+        SOIL_CREATE_NEW_ID,
+        SOIL_FLAG_INVERT_Y
+	);
+
 	glutDisplayFunc(Desenha);
 	glutReshapeFunc(AlteraTamanhoJanela);
 	glutMouseFunc(GerenciaMouse);

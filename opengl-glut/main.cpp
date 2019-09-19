@@ -6,15 +6,17 @@
 GLfloat angle, fAspect, rotate;
 
 float positionFactor1 =   0.0;
-float positionFactor2 =  50.0;
-float positionFactor3 = 100.0;
+float positionFactor2 =  100.0;
+float positionFactor3 = 4.0;
 
 GLuint ground_tex;
+
+GLuint background_tex;
 
 void ground(){
 	glPushMatrix();
 
-	GLfloat orange[] = {1.0, 0.45, 0.0, 1.0};
+	GLfloat orange[] = {0.0, 0.45, 1.0, 1.0};
 	glMaterialfv(GL_FRONT, GL_AMBIENT, orange);
 	glMaterialfv(GL_FRONT, GL_DIFFUSE, orange);
 
@@ -24,7 +26,7 @@ void ground(){
 			glBindTexture(GL_TEXTURE_2D, ground_tex);
 
 			glBegin(GL_QUADS);
-					glTexCoord2d(0.0,0.0); 
+					glTexCoord2d(1.0,0.0); 
 					glVertex3f(positionFactor1 - i*10, -0.2f,  j*10);
 
 					glTexCoord2d(1.0,0.0); 
@@ -81,6 +83,54 @@ void ground(){
 	glPopMatrix();
 }
 
+void wall() {
+	glEnable(GL_TEXTURE_2D);
+			glBindTexture(GL_TEXTURE_2D, ground_tex);
+
+			glBegin(GL_QUADS);
+					glTexCoord2d(0.0,0.0); 
+					glVertex3f(0, 0, 0);
+
+					glTexCoord2d(1.0,0.0); 
+					glVertex3f(1, 1,  0);
+
+					glTexCoord2d(1.0,1.0); 
+					glVertex3f(0, 1, 0);
+
+					glTexCoord2d(0.0,1.0);
+					glVertex3f(1, 0, 0);			
+					
+			glEnd();
+			glDisable(GL_TEXTURE_2D);
+}
+
+void background(){
+	// Push e Pop matrix servem para isolar uma ou mais transformações das demais ao
+	// mudar para um estado que é englobado pelo anterior, mas não interfere nele, ou seja,
+	// fazer uma ou mais transformações focarem em apenas um escopo de glPushMatrix()[...]glPopMatrix()
+	// OBS.: É similar ao funcionamento de um abre e fecha {}
+	glPushMatrix();
+			glEnable(GL_TEXTURE_2D);
+			glBindTexture(GL_TEXTURE_2D, background_tex);
+
+			glBegin(GL_QUADS);
+					glTexCoord2d(0.0,0.0); 
+					glVertex3f(-100.0f, -100.0f, -60.0f);
+
+					glTexCoord2d(1.0,0.0); 
+					glVertex3f(-100.0f, -50.0f,  60.0f);
+
+					glTexCoord2d(1.0,1.0); 
+					glVertex3f(-100.0f, 70.0f,  60.0f);
+
+					glTexCoord2d(0.0,1.0);
+					glVertex3f(-100.0f, 70.0f, -60.0f);			
+					
+			glEnd();
+			glDisable(GL_TEXTURE_2D);
+	glPopMatrix();
+}
+
 void fourth() {
     glBegin(GL_TRIANGLES);
         glColor3f(1.0f, 0.0f, 0.0f);
@@ -89,7 +139,7 @@ void fourth() {
         glColor3f(0.0f, 1.0f, 0.0f);
         glVertex3f( 50.5f, -20.5f, 0.0f);
 
-        glColor3f(0.0f, 0.0f, 1.0f);
+        glColor3f(0.0f, 0.0f, 0.0f);
         glVertex3f( 50.0f,  30.5f, 0.0f);
     glEnd();
 }
@@ -101,15 +151,18 @@ void Desenha(void)
 	
 	glClear(GL_COLOR_BUFFER_BIT);
 	rotate -= 0.15f;
-	glRotatef(rotate,1.0f,0.0,0.0);
-	fourth();
+	//glRotatef(rotate,1.0f,0.0,0.0);
+	//fourth();
 
 	ground();
+	ground();
+	background();
+	//wall();
 	//glColor3f(0.0f, 0.0f, 1.0f);
 
 
 	// Desenha o teapot com a cor corrente (wire-frame)
-	glutSolidTeapot(30.0f);
+	//glutSolidTeapot(30.0f);
 
 	// Executa os comandos OpenGL
 	glutSwapBuffers();
@@ -120,7 +173,6 @@ void Desenha(void)
 // Inicializa parâmetros de rendering
 void Inicializa (void)
 { 
-
 
 	GLfloat luzAmbiente[4]={0.2,0.2,0.2,1.0}; 
 	GLfloat luzDifusa[4]={0.7,0.7,0.7,1.0};	   // "cor" 
@@ -227,7 +279,14 @@ int main(int argc, char **argv)
 	//initializations();
 
 	ground_tex = SOIL_load_OGL_texture(
-        "assets/ground3.jpg",
+        "assets/ground.jpg",
+        SOIL_LOAD_AUTO,
+        SOIL_CREATE_NEW_ID,
+        SOIL_FLAG_INVERT_Y
+	);
+
+	background_tex = SOIL_load_OGL_texture(
+        "assets/museum.png",
         SOIL_LOAD_AUTO,
         SOIL_CREATE_NEW_ID,
         SOIL_FLAG_INVERT_Y

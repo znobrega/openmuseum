@@ -2,6 +2,15 @@
 #include <GL/glut.h>
 #include <iostream>
 #include "SOIL.h"
+#include <vector>
+#include "object.h"
+#include "object.cpp"
+#include "model.h"
+#include "model.cpp"
+
+
+#define GORILLA "Objects/gorilla.obj"
+#define SKELETON "Objects/skeleton.obj"
 
 GLfloat angle, fAspect, rotate;
 
@@ -12,6 +21,11 @@ float positionFactor3 = 4.0;
 GLuint ground_tex;
 
 GLuint background_tex;
+
+std::vector<Object*> objects;
+Object *myGorilla = new Object(GORILLA);
+Object *mySkeleton = new Object(SKELETON);
+
 
 void ground(){
 	glPushMatrix();
@@ -253,6 +267,17 @@ void fourth() {
     glEnd();
 }
 
+void initModels() {
+	if (!myGorilla->objeto->importModel())
+		std::cout << "Import model error!" << std::endl;
+
+	if (!mySkeleton->objeto->importModel())
+		std::cout << "Import model error!" << std::endl;
+
+	objects.push_back(myGorilla);
+	objects.push_back(mySkeleton);
+}
+
 // Função callback chamada para fazer o desenho
 void Desenha(void)
 {
@@ -263,10 +288,31 @@ void Desenha(void)
 	//glRotatef(rotate,1.0f,0.0,0.0);
 	//fourth();
 
-	ground();
-	ground();
-	cachorro();
+
+	glPushMatrix();
+		glStencilFunc(GL_ALWAYS, 1, 0xFF);
+		glStencilMask(0xFF);
+
+		glTranslatef(59.f, 0.f, 0.f);
+		glScalef(100.f, 100.f, 100.f);
+		objects[0]->objeto->renderTheModel();
+	glPopMatrix();
+
+	glPushMatrix();
+		glColor3f(0.0f, 1.0f, 1.0f);
+		glStencilFunc(GL_ALWAYS, 1, 0xFF);
+		glStencilMask(0xFF);
+
+		glTranslatef(59.f, 0.f, 0.f);
+		glScalef(100.f, 100.f, 100.f);
+		objects[1]->objeto->renderTheModel();
+	glPopMatrix();
+
+
+	//ground();
+	//cachorro();
 	background();
+	//carros[0].draw();
 	//wall();
 	//glColor3f(0.0f, 0.0f, 1.0f);
 
@@ -294,7 +340,7 @@ void Inicializa (void)
 	GLint especMaterial = 60;
 
  	// Especifica que a cor de fundo da janela será preta
-	glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+	glClearColor(1.0f, 0.0f, 0.0f, 1.0f);
 	
 	// Habilita o modelo de colorização de Gouraud
 	glShadeModel(GL_SMOOTH);
@@ -387,7 +433,7 @@ int main(int argc, char **argv)
 	glutCreateWindow("Visualizacao 3D");
 
 	//initializations();
-
+	initModels();
 	ground_tex = SOIL_load_OGL_texture(
         "assets/ground.jpg",
         SOIL_LOAD_AUTO,

@@ -284,7 +284,7 @@ void Desenha(void)
 
 	
 	glClear(GL_COLOR_BUFFER_BIT);
-	rotate -= 0.15f;
+	rotate -= 50.15f;
 	//glRotatef(rotate,1.0f,0.0,0.0);
 	//fourth();
 
@@ -295,6 +295,7 @@ void Desenha(void)
 
 		glTranslatef(59.f, 0.f, 0.f);
 		glScalef(100.f, 100.f, 100.f);
+		glRotatef(rotate , 1.f, 0.f, 1.f);
 		objects[0]->objeto->renderTheModel();
 	glPopMatrix();
 
@@ -304,6 +305,7 @@ void Desenha(void)
 		glStencilMask(0xFF);
 
 		glTranslatef(59.f, 0.f, 0.f);
+		glColor3f(0.0f, 0.0f, 1.0f);
 		glScalef(100.f, 100.f, 100.f);
 		objects[1]->objeto->renderTheModel();
 	glPopMatrix();
@@ -311,14 +313,14 @@ void Desenha(void)
 
 	//ground();
 	//cachorro();
-	background();
+	//background();
 	//carros[0].draw();
 	//wall();
-	//glColor3f(0.0f, 0.0f, 1.0f);
+	glColor3f(0.0f, 0.0f, 1.0f);
 
 
 	// Desenha o teapot com a cor corrente (wire-frame)
-	//glutSolidTeapot(30.0f);
+	glutSolidTeapot(30.0f);
 
 	// Executa os comandos OpenGL
 	glutSwapBuffers();
@@ -368,7 +370,7 @@ void Inicializa (void)
 	// Habilita o depth-buffering
 	glEnable(GL_DEPTH_TEST);
     angle=45;
-	rotate -= 0.15f;
+	rotate -= 50.15f;
 }
 
 // Função usada para especificar o volume de visualização

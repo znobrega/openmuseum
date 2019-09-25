@@ -12,7 +12,7 @@
 
 #define GORILLA "assets/gorilla.obj"
 #define SKELETON "assets/skeleton.obj"
-#define REX "assets/t-rex.obj"
+#define REX "assets/skeleton.obj"
 
 std::vector<Object*> objects;
 Object *myGorilla = new Object(GORILLA);

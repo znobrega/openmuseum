@@ -19,7 +19,7 @@ Object *myGorilla = new Object(GORILLA);
 Object *mySkeleton = new Object(SKELETON);
 Object *myRex = new Object(REX);
 Object *mySkeletonGreen = new Object(SKELETON);
-Object *myGorillaRotated = new Object(REX);
+Object *myGorillaRotated = new Object(GORILLA);
 
 
 unsigned char* img;
@@ -76,7 +76,7 @@ void gorilla() {
 		glStencilFunc(GL_ALWAYS, 1, 0xFF);
 		glStencilMask(0xFF);
 
-		glRotatef(rotate, 1.0f, 0.0f, 0.0f);
+		glRotatef(275.0f, 1.0f, 0.0f, 0.0f);
 		glTranslatef(0.f, 0.f, 0.f);
 		glColor3f(0.0f, 0.0f, 1.0f);
 		glScalef(1.f, 1.f, 1.f);
@@ -190,10 +190,10 @@ void gorillaRotated() {
 		glStencilFunc(GL_ALWAYS, 1, 0xFF);
 		glStencilMask(0xFF);
 
-		glRotatef(90.1f, 1.0f, 0.0f, 0.0f);
+		glRotatef(275.0f, 1.0f, 0.0f, 0.0f);
 		glTranslatef(1.f, 0.f, 0.f);
 		glColor3f(0.0f, 0.0f, 1.0f);
-		glScalef(6.f, 1.f, 1.f);
+		glScalef(1.f, 1.f, 1.f);
 		objects[4]->objeto->renderTheModel();
 	glPopMatrix();
 }
@@ -302,7 +302,7 @@ void display(void) {
 	glRotatef(rotate_x, 1, 0, 0);
 	glRotatef(rotate_y, 0, 1, 0);
 
-	rotate += 0.1f;
+	//rotate += 0.1f;
 
 	skeletonGreen();
 	skeleton();

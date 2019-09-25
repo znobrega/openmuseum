@@ -228,10 +228,6 @@ void wall() {
 }
 
 void background(){
-	// Push e Pop matrix servem para isolar uma ou mais transformações das demais ao
-	// mudar para um estado que é englobado pelo anterior, mas não interfere nele, ou seja,
-	// fazer uma ou mais transformações focarem em apenas um escopo de glPushMatrix()[...]glPopMatrix()
-	// OBS.: É similar ao funcionamento de um abre e fecha {}
 	glPushMatrix();
 			glEnable(GL_TEXTURE_2D);
 			glBindTexture(GL_TEXTURE_2D, background_tex);
@@ -284,31 +280,37 @@ void Desenha(void)
 
 	
 	glClear(GL_COLOR_BUFFER_BIT);
-	rotate -= 50.15f;
+	// Aki o angulo pode ser decrementado
+	rotate = 10.15f;
 	//glRotatef(rotate,1.0f,0.0,0.0);
 	//fourth();
 
 
-	glPushMatrix();
-		glStencilFunc(GL_ALWAYS, 1, 0xFF);
-		glStencilMask(0xFF);
+	// glPushMatrix();
+	// 	glStencilFunc(GL_ALWAYS, 1, 0xFF);
+	// 	glStencilMask(0xFF);
 
-		glTranslatef(59.f, 0.f, 0.f);
-		glScalef(100.f, 100.f, 100.f);
-		glRotatef(rotate , 1.f, 0.f, 1.f);
-		objects[0]->objeto->renderTheModel();
-	glPopMatrix();
+	// 	glTranslatef(59.f, 0.f, 0.f);
+	// 	glScalef(100.f, 100.f, 100.f);
+	// 	glRotatef(rotate , 1.f, 0.f, 1.f);
+	// 	objects[0]->objeto->renderTheModel();
+	// glPopMatrix();
 
-	glPushMatrix();
-		glColor3f(0.0f, 1.0f, 1.0f);
-		glStencilFunc(GL_ALWAYS, 1, 0xFF);
-		glStencilMask(0xFF);
+	// glPushMatrix();
+	// 	glColor3f(0.0f, 1.0f, 1.0f);
+	// 	glStencilFunc(GL_ALWAYS, 1, 0xFF);
+	// 	glStencilMask(0xFF);
 
-		glTranslatef(59.f, 0.f, 0.f);
-		glColor3f(0.0f, 0.0f, 1.0f);
-		glScalef(100.f, 100.f, 100.f);
-		objects[1]->objeto->renderTheModel();
-	glPopMatrix();
+	// 	glTranslatef(59.f, 0.f, 0.f);
+	// 	glColor3f(0.0f, 0.0f, 1.0f);
+	// 	glScalef(100.f, 100.f, 100.f);
+	// 	objects[1]->objeto->renderTheModel();
+	// glPopMatrix();
+
+		glPushMatrix();
+		glMultMatrixf(objects[0]->local);
+		objects[0]->draw();
+		glPopMatrix();
 
 
 	//ground();
@@ -370,7 +372,7 @@ void Inicializa (void)
 	// Habilita o depth-buffering
 	glEnable(GL_DEPTH_TEST);
     angle=45;
-	rotate -= 50.15f;
+	rotate = 50.15f;
 }
 
 // Função usada para especificar o volume de visualização
@@ -413,11 +415,11 @@ void GerenciaMouse(int button, int state, int x, int y)
 {
 	if (button == GLUT_LEFT_BUTTON)
 		if (state == GLUT_DOWN) {  // Zoom-in
-			if (angle >= 10) angle -= 5;
+			//if (angle >= 10)  angle -= 1;
 		}
 	if (button == GLUT_RIGHT_BUTTON)
 		if (state == GLUT_DOWN) {  // Zoom-out
-			if (angle <= 130) angle += 5;
+			//if (angle <= 130)  angle += 1;
 		}
 	EspecificaParametrosVisualizacao();
 	glutPostRedisplay();

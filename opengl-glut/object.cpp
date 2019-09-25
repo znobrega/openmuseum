@@ -41,9 +41,9 @@
 		glStencilFunc(GL_ALWAYS, 1, 0xFF);
 		glStencilMask(0xFF);
 
-		glTranslatef(0, 0, 0.0);
+		glTranslatef(10, 0, 0.0);
 		glScalef(54.f, 50.f, 50.f);
-		glRotatef(this->carRotate, 0.f, 1.f, 0.f);
+		//glRotatef(this->carRotate, 0.f, 1.f, 0.f);
 		objeto->renderTheModel();
 		glPopMatrix();
 
